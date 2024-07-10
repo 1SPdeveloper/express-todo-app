@@ -91,7 +91,7 @@
   - Weapons (Very Rare)
     - 1H_KitchenKnife
 
-### 4. JSON Specification
+## 4. JSON Specification
 
 นี่คือโค้ด JSON สำหรับต้นไม้ loot ข้างต้น:
 ```json
