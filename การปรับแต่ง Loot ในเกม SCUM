@@ -6,7 +6,7 @@
 - [JSON](https://en.wikipedia.org/wiki/JSON)
 - [W3Schools JSON Intro](https://www.w3schools.com/js/js_json_intro.asp)
 - [JSON.org](https://www.json.org/)
-
+ห
 ไฟล์ JSON ที่เกี่ยวข้องกับ loot ส่วนใหญ่สามารถส่งออกจากเกมได้ผ่านคำสั่งแอดมินต่างๆ ขณะที่บางไฟล์ต้องสร้างขึ้นเอง เส้นทางหลักที่พบไฟล์ JSON คือ:
 - เซิร์ฟเวอร์มัลติเพลเยอร์: `<Server>\SCUM\Saved\Config\WindowsServer\Loot`
 - โหมดผู้เล่นคนเดียว: `%LocalAppData%\SCUM\Saved\Config\WindowsNoEditor\Loot`
