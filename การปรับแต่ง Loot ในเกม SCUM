@@ -1,33 +1,34 @@
-# การปรับแต่งการลูตในเกม SCUM
+# SCUM Loot Customization Guide
 
-## แนะนำ
+## Introduction
 
-เอกสารนี้อธิบายเกี่ยวกับคุณสมบัติการปรับแต่งการลูตในเกม SCUM การปรับแต่งการลูตทำผ่านการสร้างและการแก้ไขไฟล์ JSON ต่างๆ ความรู้พื้นฐานเกี่ยวกับ JSON เป็นสิ่งจำเป็น หากคุณไม่เคยได้ยินเกี่ยวกับ JSON หรือจำเป็นต้องทบทวนความรู้ นี่คือลิงก์ที่มีประโยชน์:
+This document explains the customization of loot in the game SCUM. Loot customization is done through creating and modifying various JSON files. Basic knowledge of JSON is essential. If you're unfamiliar with JSON or need a refresher, here are some helpful links:
 
-- [JSON](https://www.json.org/json-en.html)
+- [JSON](https://www.json.org/)
 - [W3Schools JSON Intro](https://www.w3schools.com/js/js_json_intro.asp)
-- [JSON.org](https://www.json.org/)
+- [JSON.org](https://json.org/)
 
-ไฟล์ JSON ที่เกี่ยวข้องกับการลูตส่วนใหญ่สามารถส่งออกจากเกมได้ผ่านคำสั่งแอดมินต่างๆ ขณะที่บางไฟล์ต้องสร้างขึ้นเอง เส้นทางหลักที่พบไฟล์ JSON คือ:
+Most JSON files related to loot can be exported from the game via various admin commands, while some files need to be created manually. The main paths where JSON files are found are:
 
-- สำหรับเซิร์ฟเวอร์มัลติเพลเยอร์: `<Server>\SCUM\Saved\Config\WindowsServer\Loot`
-- สำหรับโหมดผู้เล่นคนเดียว: `%LocalAppData%\SCUM\Saved\Config\WindowsNoEditor\Loot`
+- Multiplayer server: `<Server>\SCUM\Saved\Config\WindowsServer\Loot`
+- Single-player mode: `%LocalAppData%\SCUM\Saved\Config\WindowsNoEditor\Loot`
 
-ไฟล์ JSON จะถูกโหลดเมื่อเริ่มเกม และการเปลี่ยนแปลงใดๆ สามารถโหลดใหม่ได้ผ่านคำสั่ง `#ReloadLootCustomizationsAndResetSpawners` เพื่อทดสอบการปรับเปลี่ยนได้อย่างรวดเร็ว คำสั่งนี้จะถูกอธิบายรายละเอียดในภายหลัง รวมถึงกระบวนการส่งออก สร้าง และแก้ไขไฟล์ JSON ที่เกี่ยวข้องกับการลูต
+JSON files are loaded when the game starts, and any changes can be reloaded via the `#ReloadLootCustomizationsAndResetSpawners` command for quick testing of modifications. This command and the processes of exporting, creating, and modifying JSON files related to loot will be explained later. Before diving into commands and loot modifications, we will cover the basic concepts and features necessary for effective loot customization.
 
-ก่อนที่จะเข้าสู่คำสั่งและการปรับเปลี่ยนการลูต เราจะครอบคลุมแนวคิดและคุณสมบัติพื้นฐานที่จำเป็นสำหรับการปรับแต่งการลูตอย่างมีประสิทธิภาพ
+If you want to start immediately, go to the [Export Section](#export-section).
 
-หากคุณต้องการเริ่มต้นทันที ให้ข้ามไปที่ส่วนการส่งออก
+## Rarity
 
-## ความหายาก
+Rarity is used throughout loot customization to determine the likelihood of selecting an object from a set of objects. An object is an abstract term and can mean anything. You can think of an object as a temporary item. Each object in a set is assigned a rarity which can be one of the following values:
 
-ความหายากถูกใช้ตลอดการปรับแต่งการลูต โดยมันกำหนดความน่าจะเป็นในการเลือกวัตถุจากชุดของวัตถุ วัตถุเป็นคำที่เป็นนามธรรมและสามารถหมายถึงอะไรก็ได้ คุณสามารถคิดว่าวัตถุเป็นไอเท็มชั่วคราว แต่ละวัตถุในชุดจะได้รับการกำหนดความหายากซึ่งสามารถเป็นค่าดังต่อไปนี้:
+- **Abundant:** 32 times more likely to be selected than Extremely Rare
+- **Common:** 16 times more likely to be selected than Extremely Rare
+- **Uncommon:** 8 times more likely to be selected than Extremely Rare
+- **Rare:** 4 times more likely to be selected than Extremely Rare
+- **Very Rare:** 2 times more likely to be selected than Extremely Rare
+- **Extremely Rare:** equally likely to be selected as other Extremely Rare objects in the set
 
-- **Abundant**: มีโอกาสถูกเลือก 32 เท่าของ Extremely Rare
-- **Common**: มีโอกาสถูกเลือก 16 เท่าของ Extremely Rare
-- **Uncommon**: มีโอกาสถูกเลือก 8 เท่าของ Extremely Rare
-- **Rare**: มีโอกาสถูกเลือก 4 เท่าของ Extremely Rare
-- **Very Rare**: มีโอกาสถูกเลือก 2 เท่าของ Extremely Rare
-- **Extremely Rare**: มีโอกาสถูกเลือกเท่ากับวัตถุ Extremely Rare อื่นๆ ในชุด
+For example, the following set of objects (objects in this example are items):
 
-ตัวอย่างเช่น ชุดของวัตถุดังต่อไปนี้ (วัตถุ
+```json
+{ Apple (Abundant), Banana (Common), Lemon (Uncommon), Kiwi (Rare), Mango (Very Rare), Watermelon (Extremely Rare) }
